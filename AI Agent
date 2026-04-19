@@ -1,0 +1,268 @@
+1. FULL TREE
+
+
+id	parentId	type	text	options	target	signal
+START	null	start	Good evening. Let's take a moment to reflect on your day.			
+A1_OPEN	START	question	How did today feel overall?	In control|Productive but busy|Overwhelming|Out of my hands		
+A1_D1	A1_OPEN	decision		answer=In control|Productive but busy:A1_Q_HIGH;answer=Overwhelming|Out of my hands:A1_Q_LOW		
+A1_Q_HIGH	A1_D1	question	When things went well today, what made it happen?	I planned ahead|I adapted quickly|The team delivered|It just worked out		axis1:internal
+A1_Q_LOW	A1_D1	question	When things didn’t go your way, what did you do next?	Looked for what I could control|Waited for direction|Pushed through|Felt stuck		axis1:external
+A1_D2_HIGH	A1_Q_HIGH	decision		answer=The team delivered|It just worked out:A1_REF_MIX;answer=I planned ahead|I adapted quickly:A1_REF_INT		
+A1_D2_LOW	A1_Q_LOW	decision		answer=Looked for what I could control|Pushed through:A1_REF_RECOVER;answer=Waited for direction|Felt stuck:A1_REF_EXT		
+A1_REF_INT	A1_D2_HIGH	reflection	You took an active role in shaping your day. That’s agency — even when things aren't perfect, you stayed engaged.			axis1:internal
+A1_REF_MIX	A1_D2_HIGH	reflection	Some things worked in your favor, but you were still part of the outcome. Agency isn't control — it's participation.			axis1:internal
+A1_REF_RECOVER	A1_D2_LOW	reflection	Even when things felt off, you looked for ways to move forward. That’s a form of control many people miss.			axis1:internal
+A1_REF_EXT	A1_D2_LOW	reflection	Days like this can feel driven by everything around you. But even here, there were moments where you made a call.			axis1:external
+BRIDGE_1_2A	A1_REF_INT	bridge	How you show up doesn’t just shape outcomes — it shapes what you bring to others.		A2_OPEN	
+BRIDGE_1_2B	A1_REF_MIX	bridge	How you show up doesn’t just shape outcomes — it shapes what you bring to others.		A2_OPEN	
+BRIDGE_1_2C	A1_REF_RECOVER	bridge	How you show up doesn’t just shape outcomes — it shapes what you bring to others.		A2_OPEN	
+BRIDGE_1_2D	A1_REF_EXT	bridge	How you show up doesn’t just shape outcomes — it shapes what you bring to others.		A2_OPEN	
+
+A2_OPEN	null	question	Think about your interactions today. What stood out most?	Supporting someone|Focused on my work|Not getting enough support|Picking up others' slack		
+A2_D1	A2_OPEN	decision		answer=Supporting someone:A2_Q_CONTRIB;answer=Picking up others' slack:A2_Q_MIX;answer=Focused on my work|Not getting enough support:A2_Q_ENT		
+A2_Q_CONTRIB	A2_D1	question	What motivated that moment?	I wanted to help|It felt natural|They needed it|It improved the outcome		axis2:contribution
+A2_Q_ENT	A2_D1	question	What frustrated you most?	Lack of recognition|Others not contributing|Too much on me|No support		axis2:entitlement
+A2_Q_MIX	A2_D1	question	When picking up slack, what did it feel like?	I was glad to help|It was necessary|I felt annoyed|I felt taken for granted		axis2:mixed
+
+A2_D2_CONTRIB	A2_Q_CONTRIB	decision		answer=I wanted to help|It felt natural:A2_REF_CONTRIB;answer=They needed it|It improved the outcome:A2_REF_STRUCT		
+A2_D2_ENT	A2_Q_ENT	decision		answer=Lack of recognition|No support:A2_REF_ENT;answer=Others not contributing|Too much on me:A2_REF_PRESS		
+A2_D2_MIX	A2_Q_MIX	decision		answer=I was glad to help|It was necessary:A2_REF_CONTRIB;answer=I felt annoyed|I felt taken for granted:A2_REF_ENT		
+
+A2_REF_CONTRIB	A2_D2_CONTRIB	reflection	You contributed beyond yourself today. That kind of effort compounds — even when it’s not immediately visible.			axis2:contribution
+A2_REF_STRUCT	A2_D2_CONTRIB	reflection	You focused on impact, not just effort. That’s contribution tied to outcomes.			axis2:contribution
+A2_REF_ENT	A2_D2_ENT	reflection	It’s easy to notice what’s missing — support, recognition, fairness. But that lens can hide what you actually gave.			axis2:entitlement
+A2_REF_PRESS	A2_D2_ENT	reflection	You carried weight today. The question is — did it stay as pressure, or turn into contribution?			axis2:mixed
+
+BRIDGE_2_3A	A2_REF_CONTRIB	bridge	Contribution changes how work feels. But meaning often shows up when we zoom out further.		A3_OPEN	
+BRIDGE_2_3B	A2_REF_STRUCT	bridge	Contribution changes how work feels. But meaning often shows up when we zoom out further.		A3_OPEN	
+BRIDGE_2_3C	A2_REF_ENT	bridge	Contribution changes how work feels. But meaning often shows up when we zoom out further.		A3_OPEN	
+BRIDGE_2_3D	A2_REF_PRESS	bridge	Contribution changes how work feels. But meaning often shows up when we zoom out further.		A3_OPEN	
+
+A3_OPEN	null	question	When you think about today’s challenges, what felt most important?	My workload|Team progress|Helping someone succeed|Customer impact		
+A3_D1	A3_OPEN	decision		answer=My workload:A3_REF_SELF;answer=Team progress:A3_REF_TEAM;answer=Helping someone succeed:A3_REF_OTHER;answer=Customer impact:A3_REF_WIDE		
+
+A3_REF_SELF	A3_D1	reflection	Your focus stayed close to your own responsibilities. That’s natural — but it can make everything feel heavier.			axis3:self
+A3_REF_TEAM	A3_D1	reflection	You saw your day as part of a shared effort. That perspective often reduces pressure.			axis3:team
+A3_REF_OTHER	A3_D1	reflection	You noticed someone beyond yourself. That shift often creates meaning, not just progress.			axis3:other
+A3_REF_WIDE	A3_D1	reflection	You connected your work to the end impact. That’s where effort turns into purpose.			axis3:wide
+
+SUMMARY	A3_REF_SELF	summary	Today felt "{A1_OPEN.answer}". You mostly leaned {axis1.dominant} in control, {axis2.dominant} in contribution, and focused on {axis3.dominant}. There's a pattern in how you show up — and it shapes more than just outcomes.		
+SUMMARY2	A3_REF_TEAM	summary	Today felt "{A1_OPEN.answer}". You mostly leaned {axis1.dominant} in control, {axis2.dominant} in contribution, and focused on {axis3.dominant}. There's a pattern in how you show up — and it shapes more than just outcomes.		
+SUMMARY3	A3_REF_OTHER	summary	Today felt "{A1_OPEN.answer}". You mostly leaned {axis1.dominant} in control, {axis2.dominant} in contribution, and focused on {axis3.dominant}. There's a pattern in how you show up — and it shapes more than just outcomes.		
+SUMMARY4	A3_REF_WIDE	summary	Today felt "{A1_OPEN.answer}". You mostly leaned {axis1.dominant} in control, {axis2.dominant} in contribution, and focused on {axis3.dominant}. There's a pattern in how you show up — and it shapes more than just outcomes.		
+
+END	SUMMARY	end	See you tomorrow.		
+END2	SUMMARY2	end	See you tomorrow.		
+END3	SUMMARY3	end	See you tomorrow.		
+END4	SUMMARY4	end	See you tomorrow.		
+
+
+2. MERMAID DIAGRAM
+
+```mermaid
+graph TD
+START --> A1_OPEN
+A1_OPEN --> A1_D1
+A1_D1 -->|High| A1_Q_HIGH
+A1_D1 -->|Low| A1_Q_LOW
+A1_Q_HIGH --> A1_D2_HIGH
+A1_Q_LOW --> A1_D2_LOW
+A1_D2_HIGH --> A1_REF_INT
+A1_D2_HIGH --> A1_REF_MIX
+A1_D2_LOW --> A1_REF_RECOVER
+A1_D2_LOW --> A1_REF_EXT
+
+A1_REF_INT --> A2_OPEN
+A1_REF_EXT --> A2_OPEN
+
+A2_OPEN --> A2_D1
+A2_D1 --> A2_Q_CONTRIB
+A2_D1 --> A2_Q_ENT
+A2_D1 --> A2_Q_MIX
+
+A2_Q_CONTRIB --> A2_REF_CONTRIB
+A2_Q_ENT --> A2_REF_ENT
+A2_Q_MIX --> A2_REF_PRESS
+
+A2_REF_CONTRIB --> A3_OPEN
+A2_REF_ENT --> A3_OPEN
+
+A3_OPEN --> A3_D1
+A3_D1 --> A3_REF_SELF
+A3_D1 --> A3_REF_TEAM
+A3_D1 --> A3_REF_OTHER
+A3_D1 --> A3_REF_WIDE
+
+A3_REF_SELF --> SUMMARY
+A3_REF_TEAM --> SUMMARY
+A3_REF_OTHER --> SUMMARY
+A3_REF_WIDE --> SUMMARY
+
+
+---
+
+# 💻 3. CLI AGENT (PYTHON)
+
+Save as `/agent/main.py`
+
+```python
+import csv
+
+class ReflectionAgent:
+    def __init__(self, file_path):
+        self.nodes = {}
+        self.state = {
+            "answers": {},
+            "signals": {
+                "axis1": {"internal": 0, "external": 0},
+                "axis2": {"contribution": 0, "entitlement": 0, "mixed": 0},
+                "axis3": {"self": 0, "team": 0, "other": 0, "wide": 0}
+            }
+        }
+        self.load_tree(file_path)
+
+    def load_tree(self, file_path):
+        with open(file_path, newline='', encoding='utf-8') as f:
+            reader = csv.DictReader(f, delimiter='\t')
+            for row in reader:
+                self.nodes[row['id']] = row
+
+    def get_next(self, node):
+        if node["type"] == "decision":
+            rules = node["options"].split(";")
+            last_answer = list(self.state["answers"].values())[-1]
+
+            for rule in rules:
+                cond, target = rule.split(":")
+                cond_values = cond.replace("answer=", "").split("|")
+                if last_answer in cond_values:
+                    return target
+        return None
+
+    def apply_signal(self, signal):
+        if not signal:
+            return
+        axis, val = signal.split(":")
+        self.state["signals"][axis][val] += 1
+
+    def dominant(self, axis):
+        return max(self.state["signals"][axis], key=self.state["signals"][axis].get)
+
+    def run(self):
+        current = "START"
+
+        while True:
+            node = self.nodes[current]
+            print("\n" + node["text"])
+
+            if node["signal"]:
+                self.apply_signal(node["signal"])
+
+            if node["type"] == "question":
+                options = node["options"].split("|")
+                for i, opt in enumerate(options):
+                    print(f"{i+1}. {opt}")
+                choice = int(input("Choose: ")) - 1
+                answer = options[choice]
+                self.state["answers"][current] = answer
+
+                # find child
+                next_node = None
+                for n in self.nodes.values():
+                    if n["parentId"] == current:
+                        next_node = n["id"]
+                        break
+                current = next_node
+
+            elif node["type"] == "decision":
+                current = self.get_next(node)
+
+            elif node["type"] == "summary":
+                text = node["text"]
+                text = text.replace("{A1_OPEN.answer}", self.state["answers"].get("A1_OPEN", ""))
+                text = text.replace("{axis1.dominant}", self.dominant("axis1"))
+                text = text.replace("{axis2.dominant}", self.dominant("axis2"))
+                text = text.replace("{axis3.dominant}", self.dominant("axis3"))
+                print("\n" + text)
+
+                # move to END
+                for n in self.nodes.values():
+                    if n["parentId"] == node["id"]:
+                        current = n["id"]
+                        break
+
+            elif node["type"] == "end":
+                print("\nSession complete.")
+                break
+
+            else:
+                # auto move to child
+                next_node = None
+                for n in self.nodes.values():
+                    if n["parentId"] == current:
+                        next_node = n["id"]
+                        break
+                current = next_node
+
+
+if __name__ == "__main__":
+    agent = ReflectionAgent("../tree/reflection-tree.tsv")
+    agent.run()
+
+SUMMARY --> END
+
+
+
+
+4. SAMPLE TRANSCRIPTS
+Persona 1 (Victim / Entitled / Self)
+
+How did today feel overall?
+→ Out of my hands
+
+When things didn’t go your way?
+→ Waited for direction
+
+Reflection:
+"Days like this can feel driven by everything around you..."
+
+Interactions?
+→ Not getting enough support
+
+Frustration?
+→ Lack of recognition
+
+Reflection:
+"It’s easy to notice what’s missing..."
+
+Challenges?
+→ My workload
+
+Final Summary:
+You leaned external, entitlement, and self-focus.
+
+
+Persona 2 (Victor / Contribution / Altrocentric)
+How did today feel overall?
+→ In control
+
+What made it happen?
+→ I adapted quickly
+
+Reflection:
+"You stayed engaged..."
+
+Interactions?
+→ Supporting someone
+
+Motivation?
+→ I wanted to help
+
+Reflection:
+"You contributed beyond yourself..."
+
+Challenges?
+→ Customer impact
+
+Final Summary:
+You leaned internal, contribution, and wide perspective.
